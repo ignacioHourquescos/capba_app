@@ -7,10 +7,10 @@ interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout;
 }
 
-function StorefrontApp({ Component, pageProps }: AppPropsWithLayout) {
+function capbaApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout || ((page) => page);
 
   return <>{getLayout(<Component {...pageProps} />)}</>;
 }
 
-export default StorefrontApp;
+export default capbaApp;
