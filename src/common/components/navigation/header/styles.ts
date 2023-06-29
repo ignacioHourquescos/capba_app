@@ -9,7 +9,7 @@ export const Styled = {
     items-center
     justify-center
     justify-items-center
-    absolute
+    sticky top-0
     bg-white
     z-10
     px-20

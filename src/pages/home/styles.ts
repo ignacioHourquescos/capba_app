@@ -5,7 +5,7 @@ export const Styled = {
   `,
   Carrousel: tw.img`
   rounded-md
-  h-40
+  h-2/5
   w-full
   `,
   ButtonPanel: tw.div`

@@ -7,7 +7,7 @@ export interface IPrimaryButton {
   link?: string;
 }
 const PrimaryButton: React.FC<IPrimaryButton> = ({ title }) => {
-  return <Styled.Inner>{title}</Styled.Inner>;
+  return <Styled.Inner>{title.toUpperCase()}</Styled.Inner>;
 };
 
 export default PrimaryButton;
