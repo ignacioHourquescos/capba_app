@@ -1,10 +1,9 @@
 import tw from 'tailwind-styled-components';
-import styled from 'styled-components';
 
 export const Layout = {
   Inner: tw.div`
   flex
-  background-color: #161545;
+  
 `,
 };
 
@@ -26,15 +25,13 @@ export const Menu = {
 };
 
 export const Content = {
-  Inner: styled.div`
-    height: 100vh;
-
-    background-color: #161545;
-    padding: 4vw;
-    @media (min-width: 1200px) {
-      padding: 0 10vw;
-    }
-  `,
+  Inner: tw.div`
+  h-screen
+  bg-blue
+  p-4
+  lg:px-20
+  
+`,
   Title: tw.div`
   flex
   w-full

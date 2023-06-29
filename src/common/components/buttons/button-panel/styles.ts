@@ -1,20 +1,18 @@
-import styled from 'styled-components';
-
+import tw from 'tailwind-styled-components';
 export const Styled = {
-  Inner: styled.div`
-    flex: 1;
+  Inner: tw.div`
+ flex-1
   `,
-  SingleColumnButtonPanel: styled.div`
-    margin-top: 5vw;
-    display: grid;
-
-    grid-gap: 2vw;
-    grid-template-columns: 1fr;
+  SingleColumnButtonPanel: tw.div`
+  mt-5
+  grid
+  gap-4
+  grid-cols-1
   `,
-  DoubleColumnButtonPanel: styled.div`
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    margin-top: 5vw;
-    grid-gap: 2vw;
+  DoubleColumnButtonPanel: tw.div`
+  grid
+  grid-cols-2
+  mt-5
+  gap-4
   `,
 };
