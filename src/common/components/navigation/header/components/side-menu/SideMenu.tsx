@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
 import Drawer from '@mui/material/Drawer';
-import { object, string, TypeOf } from 'zod';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { Styled } from './styles';
