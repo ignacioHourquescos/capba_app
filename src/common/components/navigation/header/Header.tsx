@@ -14,7 +14,7 @@ const Header: React.FC<IHeader> = ({}) => {
   return (
     <Styled.Inner>
       <Styled.Logo onClick={goHome} src="/logo.webp"></Styled.Logo>
-      <SideMenu />
+      {/* <SideMenu /> */}
     </Styled.Inner>
   );
 };

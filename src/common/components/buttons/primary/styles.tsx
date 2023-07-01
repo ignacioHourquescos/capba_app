@@ -5,7 +5,9 @@ export const Styled = {
  bg-white
  rounded-lg
  text-center
-  py-4
-  text-xl
+  py-3
+  text-lg
+  font-semibold
+  text-blue
   `,
 };

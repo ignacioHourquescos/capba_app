@@ -9,7 +9,9 @@ import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton';
 import mockedCalendar from '@/lib/fake-api/calendar';
 import { Styled } from './styles';
 import { AddToCalendarButton } from 'add-to-calendar-button-react';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Link from 'next/link';
+import { Divider } from '@mui/material';
 
 const initialValue = dayjs();
 interface Event {
@@ -55,9 +57,63 @@ export default function DateCalendarServerRequest() {
   const [highlightedDays, setHighlightedDays] = useState<number[]>([]);
   const [monthEvents, setMonthEvents] = useState<Event[]>([]);
   const [selectedMonth, setSelectedMonth] = useState();
+  const [selectedYear, setSelectedYear] = useState();
+  const color = 'white';
+  const theme = createTheme({
+    components: {
+      // MuiIconButton: {
+      //   styleOverrides: {
+      //     sizeMedium: {
+      //       color,
+      //     },
+      //   },
+      // },
+      // MuiOutlinedInput: {
+      //   styleOverrides: {
+      //     root: {
+      //       color,
+      //     },
+      //   },
+      // },
+      // MuiInputLabel: {
+      //   styleOverrides: {
+      //     root: {
+      //       color,
+      //     },
+      //   },
+      // },
+      // MuiPickersDay: {
+      //   styleOverrides: {
+      //     root: {
+      //       color,
+      //     },
+      //   },
+      // },
+      // MuiTypography: {
+      //   styleOverrides: {
+      //     root: {
+      //       color,
+      //     },
+      //   },
+      // },
+      // MuiSvgIcon: {
+      //   styleOverrides: {
+      //     root: {
+      //       color,
+      //     },
+      //   },
+      // },
+      // root: {
+      //   '& .MuiDayCalendar-weekDayLabel': {
+      //     border: '1px solid red',
+      //   },
+      // },
+    },
+  });
 
   function fakeFetch(date: any) {
     return new Promise<{ daysToHighlight: number[] }>((resolve, reject) => {
+      console.log(date);
       setSelectedMonth(date.$M);
       const array = mockedCalendar.filter(
         (element) => element.month.toString() == (date.$M + 1).toString()
@@ -67,18 +123,20 @@ export default function DateCalendarServerRequest() {
     });
   }
 
-  function fetchMonthsEvents(month: any) {
+  function fetchMonthsEvents(month: any, year: any) {
     return new Promise<{ daysToHighlight: number[] }>((resolve, reject) => {
       const array = mockedCalendar.filter(
-        (element) => element.month.toString() == (month + 1).toString()
+        (element) =>
+          element.month.toString() == (month + 1).toString() &&
+          element.year.toString() == year.toString()
       );
       setMonthEvents(array);
     });
   }
 
   useEffect(() => {
-    fetchMonthsEvents(selectedMonth);
-  }, [selectedMonth]);
+    fetchMonthsEvents(selectedMonth, selectedYear);
+  }, [selectedMonth, selectedYear]);
 
   const fetchHighlightedDays = (date: Dayjs, event: any) => {
     const controller = new AbortController();
@@ -103,30 +161,38 @@ export default function DateCalendarServerRequest() {
     setIsLoading(true);
     setHighlightedDays([]);
     fetchHighlightedDays(date, event);
+    setSelectedYear(date.$y);
     setSelectedMonth(date.$M);
   };
 
   return (
     <>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DateCalendar
-          defaultValue={initialValue}
-          loading={isLoading}
-          onMonthChange={(event) => {
-            handleMonthChange(event);
-          }}
-          renderLoading={() => <DayCalendarSkeleton />}
-          slots={{
-            day: ServerDay,
-          }}
-          slotProps={{
-            day: {
-              highlightedDays,
-            } as any,
-          }}
-        />
-      </LocalizationProvider>
-      <>
+      <ThemeProvider theme={theme}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Styled.AbsoluteCalendarContainer>
+            <Styled.CalendarContainer>
+              <DateCalendar
+                defaultValue={initialValue}
+                loading={isLoading}
+                onMonthChange={(event) => {
+                  handleMonthChange(event);
+                }}
+                renderLoading={() => <DayCalendarSkeleton />}
+                slots={{
+                  day: ServerDay,
+                }}
+                slotProps={{
+                  day: {
+                    highlightedDays,
+                  } as any,
+                }}
+              />
+            </Styled.CalendarContainer>
+          </Styled.AbsoluteCalendarContainer>
+        </LocalizationProvider>
+      </ThemeProvider>
+      <Styled.HiddenBlock />
+      <Styled.CardContainer>
         {monthEvents.map((element, idx) => (
           <Styled.Card key={idx}>
             <Styled.Date>{element.day}</Styled.Date>
@@ -134,7 +200,20 @@ export default function DateCalendarServerRequest() {
               <Styled.Header>
                 <Styled.Title>{element.title}</Styled.Title>
               </Styled.Header>
-              <Styled.Description>{element.description}</Styled.Description>
+              <Styled.Description>
+                {element.description}
+                <Divider />
+
+                <Styled.LocationTime>
+                  <Styled.Location>
+                    Dirección: {element.location}
+                  </Styled.Location>
+                  <Styled.Time>
+                    Horario:
+                    {element.startTime}-{element.endTime}
+                  </Styled.Time>
+                </Styled.LocationTime>
+              </Styled.Description>
               <Styled.ButtonContainer>
                 <AddToCalendarButton
                   name={`${element.title}`}
@@ -150,13 +229,13 @@ export default function DateCalendarServerRequest() {
                   lightMode="bodyScheme"
                 ></AddToCalendarButton>
                 <Styled.LinkToEventButton>
-                  <Link href={`${element.link}`}>Vistar &rarr;</Link>
+                  <Link href={`${element.link}`}>Visitar &rarr;</Link>
                 </Styled.LinkToEventButton>
               </Styled.ButtonContainer>
             </Styled.Content>
           </Styled.Card>
         ))}
-      </>
+      </Styled.CardContainer>
     </>
   );
 }

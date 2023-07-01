@@ -13,6 +13,7 @@ export const Styled = {
     fixed
     bottom-0
     w-full
+    z-50
   `,
   Copyright: tw.div`
   text-white

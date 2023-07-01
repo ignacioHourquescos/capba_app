@@ -4,7 +4,7 @@ export const Styled = {
  flex-1
   `,
   Carrousel: tw.img`
-  rounded-md
+  rounded-lg
   h-2/5
   w-full
   `,

@@ -3,7 +3,8 @@ export const Styled = {
   Inner: tw.div`
  flex-1
  font-bold
- text-4xl
+ text-3xl
+ px-2
  text-white
  py-2
   `,

@@ -14,5 +14,6 @@ export const Styled = {
     z-10
     px-20
   `,
-  Logo: tw.img``,
+  Logo: tw.img`
+  bg-white`,
 };

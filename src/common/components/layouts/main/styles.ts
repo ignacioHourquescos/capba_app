@@ -26,10 +26,11 @@ export const Menu = {
 
 export const Content = {
   Inner: tw.div`
-  h-screen
+  min-h-[90vh]
   bg-blue
   p-4
   lg:px-20
+  pb-20
   
 `,
   Title: tw.div`

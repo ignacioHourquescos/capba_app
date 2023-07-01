@@ -7,15 +7,10 @@ import Header from '../../navigation/header/Header';
 import Footer from '../../navigation/footer/Footer';
 
 export interface IMainLayout extends React.ComponentPropsWithoutRef<'div'> {
-  justify?: 'items-center' | 'items-start';
   title?: 'string';
 }
 
-const MainLayout: React.FC<IMainLayout> = ({
-  justify = 'items-center',
-  title,
-  children,
-}) => {
+const MainLayout: React.FC<IMainLayout> = ({ title, children }) => {
   return (
     <>
       <Head>

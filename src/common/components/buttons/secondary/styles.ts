@@ -5,11 +5,13 @@ export const Styled = {
  bg-white
  rounded-lg
  text-center
-  p-2
-  test-base
+  p-1
+  text-xs
   text-white
-  px-4
+  px-2
   bg-lightblue
   w-full
+  ml-2
+  
   `,
 };
