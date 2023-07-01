@@ -52,20 +52,17 @@ function ServerDay(
 export default function DateCalendarServerRequest() {
   const requestAbortController = useRef<AbortController | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [highlightedDays, setHighlightedDays] = useState([]);
+  const [highlightedDays, setHighlightedDays] = useState<number[]>([]);
   const [monthEvents, setMonthEvents] = useState<Event[]>([]);
   const [selectedMonth, setSelectedMonth] = useState();
 
   function fakeFetch(date: any) {
     return new Promise<{ daysToHighlight: number[] }>((resolve, reject) => {
-      console.log('aca me llega el mes en fakeFetch', date.$M);
-      console.log('mocked calendar', mockedCalendar);
       setSelectedMonth(date.$M);
       const array = mockedCalendar.filter(
         (element) => element.month.toString() == (date.$M + 1).toString()
       );
       const daysToHighlight = array.map((item) => item.day);
-      console.log('startTimestamp', daysToHighlight);
       resolve({ daysToHighlight });
     });
   }
@@ -82,19 +79,6 @@ export default function DateCalendarServerRequest() {
   useEffect(() => {
     fetchMonthsEvents(selectedMonth);
   }, [selectedMonth]);
-
-  const displaySelectedDate = (event: any) => {
-    console.table([event], ['$d', '$M']);
-    console.log(event.$d);
-    const dateString = event.$d;
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.toLocaleString('default', { month: 'long' });
-    const year = date.getFullYear();
-    console.log(day); // Output: 24
-    console.log(month);
-    console.log(year);
-  };
 
   const fetchHighlightedDays = (date: Dayjs, event: any) => {
     const controller = new AbortController();
@@ -129,11 +113,9 @@ export default function DateCalendarServerRequest() {
           defaultValue={initialValue}
           loading={isLoading}
           onMonthChange={(event) => {
-            displaySelectedDate(event);
             handleMonthChange(event);
           }}
           renderLoading={() => <DayCalendarSkeleton />}
-          onChange={(event) => displaySelectedDate(event)}
           slots={{
             day: ServerDay,
           }}
