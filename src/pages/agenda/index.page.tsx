@@ -1,15 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 import Head from 'next/head';
-
 import MainLayout from '@/common/components/layouts/main/MainLayout';
 import { NextPageWithLayout } from '@/common/types/page';
-import buttonRouter from '@/lib/fake-api/fakeApi';
-import Calendar from 'react-calendar';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import dayjs from 'dayjs';
 import DateCalendarServerRequest from './components/Calendar';
 
 interface HomeProps {}

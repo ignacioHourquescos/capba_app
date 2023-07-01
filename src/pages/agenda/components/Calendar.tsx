@@ -9,6 +9,7 @@ import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton';
 import mockedCalendar from '@/lib/fake-api/calendar';
 import { Styled } from './styles';
 import { AddToCalendarButton } from 'add-to-calendar-button-react';
+import Link from 'next/link';
 
 const initialValue = dayjs();
 interface Event {
@@ -21,12 +22,37 @@ interface Event {
   location: string;
   startTime: string;
   endTime: string;
+  link: string;
+}
+
+function ServerDay(
+  props: PickersDayProps<Dayjs> & { highlightedDays?: number[] }
+) {
+  const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
+
+  const isSelected =
+    !props.outsideCurrentMonth &&
+    highlightedDays.indexOf(props.day.date()) >= 0;
+
+  return (
+    <Badge
+      key={props.day.toString()}
+      overlap="circular"
+      badgeContent={isSelected ? '🔵' : undefined}
+    >
+      <PickersDay
+        {...other}
+        outsideCurrentMonth={outsideCurrentMonth}
+        day={day}
+      />
+    </Badge>
+  );
 }
 
 export default function DateCalendarServerRequest() {
   const requestAbortController = useRef<AbortController | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [highlightedDays, setHighlightedDays] = useState([3, 2, 15]);
+  const [highlightedDays, setHighlightedDays] = useState([]);
   const [monthEvents, setMonthEvents] = useState<Event[]>([]);
   const [selectedMonth, setSelectedMonth] = useState();
 
@@ -121,54 +147,34 @@ export default function DateCalendarServerRequest() {
       <>
         {monthEvents.map((element, idx) => (
           <Styled.Card key={idx}>
-            <Styled.Header>
-              <span>day</span>
-              <span>title</span>
-              <span>agendar</span>
-              <AddToCalendarButton
-                name="[Reminder] Test the Add to Calendar Button"
-                styleLight="--btn-background: #2f4377; --btn-text: #fff; --base-font-size-s: 8px;--base-font-size-m: 8px;--base-font-size-l: 8px;--font: Georgia, 'Times New Roman', Times, serif;"
-                styleDark="--btn-background: #000; 
-                --base-font-size-l: 8px;
-                --base-font-size-m: 8px;
-                --base-font-size-s: 8px;"
-                startDate="2023-07-03"
-                options="'Apple','Google','iCal'"
-                buttonStyle="round"
-                hideIconButton
-                hideBackground
-                label="Agendar"
-                lightMode="bodyScheme"
-              ></AddToCalendarButton>
-            </Styled.Header>
-            <Styled.Description>{element.description}</Styled.Description>
+            <Styled.Date>{element.day}</Styled.Date>
+            <Styled.Content>
+              <Styled.Header>
+                <Styled.Title>{element.title}</Styled.Title>
+              </Styled.Header>
+              <Styled.Description>{element.description}</Styled.Description>
+              <Styled.ButtonContainer>
+                <AddToCalendarButton
+                  name={`${element.title}`}
+                  startDate={`${element.year}-${element.month}-${element.day}`}
+                  label="Agendar"
+                  size="0"
+                  startTime={`${element.startTime}`}
+                  endTime={`${element.endTime}`}
+                  timeZone="America/Los_Angeles"
+                  location={`${element.location}`}
+                  description={`${element.description}`}
+                  options="'Apple','Google','iCal','Outlook.com','Yahoo'"
+                  lightMode="bodyScheme"
+                ></AddToCalendarButton>
+                <Styled.LinkToEventButton>
+                  <Link href={`${element.link}`}>Vistar &rarr;</Link>
+                </Styled.LinkToEventButton>
+              </Styled.ButtonContainer>
+            </Styled.Content>
           </Styled.Card>
         ))}
       </>
     </>
-  );
-}
-
-function ServerDay(
-  props: PickersDayProps<Dayjs> & { highlightedDays?: number[] }
-) {
-  const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
-
-  const isSelected =
-    !props.outsideCurrentMonth &&
-    highlightedDays.indexOf(props.day.date()) >= 0;
-
-  return (
-    <Badge
-      key={props.day.toString()}
-      overlap="circular"
-      badgeContent={isSelected ? '🔵' : undefined}
-    >
-      <PickersDay
-        {...other}
-        outsideCurrentMonth={outsideCurrentMonth}
-        day={day}
-      />
-    </Badge>
   );
 }

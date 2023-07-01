@@ -9,6 +9,7 @@ const mockedCalendar = [
     location: 'Av. Libertador 4000',
     startTime: '20:00',
     endTime: '22:00',
+    link: 'https://www.capbadistrito2.com',
   },
   {
     id: 2,
@@ -19,7 +20,21 @@ const mockedCalendar = [
     year: 2023,
     location: 'Av del Cano, Ramos Mejia',
     startTime: '19:00',
-    endTime: '',
+    endTime: '20:00',
+    link: 'https://www.capbadistrito2.com',
+  },
+  {
+    id: 2,
+    title: 'Evento Test 4',
+    description:
+      'Descripcion de evento test que se realizara en algun lugar de la provincia de Buenos Aires',
+    day: 17,
+    month: 5,
+    year: 2023,
+    location: 'Av del Cano, Ramos Mejia',
+    startTime: '19:00',
+    endTime: '20:00',
+    link: 'https://www.capbadistrito2.com',
   },
   {
     id: 3,
@@ -29,8 +44,9 @@ const mockedCalendar = [
     month: 7,
     year: 2023,
     location: 'Libertad 548, AMBA',
-    startTime: '9:00',
+    startTime: '09:00',
     endTime: '10:00',
+    link: 'https://www.capbadistrito2.com',
   },
 ];
 
