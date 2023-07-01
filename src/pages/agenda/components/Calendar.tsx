@@ -58,58 +58,7 @@ export default function DateCalendarServerRequest() {
   const [monthEvents, setMonthEvents] = useState<Event[]>([]);
   const [selectedMonth, setSelectedMonth] = useState();
   const [selectedYear, setSelectedYear] = useState();
-  const color = 'white';
-  const theme = createTheme({
-    components: {
-      // MuiIconButton: {
-      //   styleOverrides: {
-      //     sizeMedium: {
-      //       color,
-      //     },
-      //   },
-      // },
-      // MuiOutlinedInput: {
-      //   styleOverrides: {
-      //     root: {
-      //       color,
-      //     },
-      //   },
-      // },
-      // MuiInputLabel: {
-      //   styleOverrides: {
-      //     root: {
-      //       color,
-      //     },
-      //   },
-      // },
-      // MuiPickersDay: {
-      //   styleOverrides: {
-      //     root: {
-      //       color,
-      //     },
-      //   },
-      // },
-      // MuiTypography: {
-      //   styleOverrides: {
-      //     root: {
-      //       color,
-      //     },
-      //   },
-      // },
-      // MuiSvgIcon: {
-      //   styleOverrides: {
-      //     root: {
-      //       color,
-      //     },
-      //   },
-      // },
-      // root: {
-      //   '& .MuiDayCalendar-weekDayLabel': {
-      //     border: '1px solid red',
-      //   },
-      // },
-    },
-  });
+  const [initialValues, setInitialValues] = useState(true);
 
   function fakeFetch(date: any) {
     return new Promise<{ daysToHighlight: number[] }>((resolve, reject) => {
@@ -135,7 +84,12 @@ export default function DateCalendarServerRequest() {
   }
 
   useEffect(() => {
+    handleMonthChange;
     fetchMonthsEvents(selectedMonth, selectedYear);
+    if (initialValues) {
+      setInitialValues(false);
+      handleMonthChange(dayjs());
+    }
   }, [selectedMonth, selectedYear]);
 
   const fetchHighlightedDays = (date: Dayjs, event: any) => {
@@ -167,74 +121,79 @@ export default function DateCalendarServerRequest() {
 
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Styled.AbsoluteCalendarContainer>
-            <Styled.CalendarContainer>
-              <DateCalendar
-                defaultValue={initialValue}
-                loading={isLoading}
-                onMonthChange={(event) => {
-                  handleMonthChange(event);
-                }}
-                renderLoading={() => <DayCalendarSkeleton />}
-                slots={{
-                  day: ServerDay,
-                }}
-                slotProps={{
-                  day: {
-                    highlightedDays,
-                  } as any,
-                }}
-              />
-            </Styled.CalendarContainer>
-          </Styled.AbsoluteCalendarContainer>
-        </LocalizationProvider>
-      </ThemeProvider>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <Styled.AbsoluteCalendarContainer>
+          <Styled.CalendarContainer>
+            <DateCalendar
+              defaultValue={initialValue}
+              loading={isLoading}
+              onMonthChange={(event) => {
+                handleMonthChange(event);
+              }}
+              renderLoading={() => <DayCalendarSkeleton />}
+              slots={{
+                day: ServerDay,
+              }}
+              slotProps={{
+                day: {
+                  highlightedDays,
+                } as any,
+              }}
+            />
+          </Styled.CalendarContainer>
+        </Styled.AbsoluteCalendarContainer>
+      </LocalizationProvider>
+
       <Styled.HiddenBlock />
       <Styled.CardContainer>
-        {monthEvents.map((element, idx) => (
-          <Styled.Card key={idx}>
-            <Styled.Date>{element.day}</Styled.Date>
-            <Styled.Content>
-              <Styled.Header>
-                <Styled.Title>{element.title}</Styled.Title>
-              </Styled.Header>
-              <Styled.Description>
-                {element.description}
-                <Divider />
+        {monthEvents.length == 0 ? (
+          <Styled.NoEvents>
+            No hay eventos para la fecha seleccionada
+          </Styled.NoEvents>
+        ) : (
+          monthEvents.map((element, idx) => (
+            <Styled.Card key={idx}>
+              <Styled.Date>{element.day}</Styled.Date>
+              <Styled.Content>
+                <Styled.Header>
+                  <Styled.Title>{element.title}</Styled.Title>
+                </Styled.Header>
+                <Styled.Description>
+                  {element.description}
+                  <Divider />
 
-                <Styled.LocationTime>
-                  <Styled.Location>
-                    Dirección: {element.location}
-                  </Styled.Location>
-                  <Styled.Time>
-                    Horario:
-                    {element.startTime}-{element.endTime}
-                  </Styled.Time>
-                </Styled.LocationTime>
-              </Styled.Description>
-              <Styled.ButtonContainer>
-                <AddToCalendarButton
-                  name={`${element.title}`}
-                  startDate={`${element.year}-${element.month}-${element.day}`}
-                  label="Agendar"
-                  size="0"
-                  startTime={`${element.startTime}`}
-                  endTime={`${element.endTime}`}
-                  timeZone="America/Los_Angeles"
-                  location={`${element.location}`}
-                  description={`${element.description}`}
-                  options="'Apple','Google','iCal','Outlook.com','Yahoo'"
-                  lightMode="bodyScheme"
-                ></AddToCalendarButton>
-                <Styled.LinkToEventButton>
-                  <Link href={`${element.link}`}>Visitar &rarr;</Link>
-                </Styled.LinkToEventButton>
-              </Styled.ButtonContainer>
-            </Styled.Content>
-          </Styled.Card>
-        ))}
+                  <Styled.LocationTime>
+                    <Styled.Location>
+                      Dirección: {element.location}
+                    </Styled.Location>
+                    <Styled.Time>
+                      Horario:
+                      {element.startTime}-{element.endTime}
+                    </Styled.Time>
+                  </Styled.LocationTime>
+                </Styled.Description>
+                <Styled.ButtonContainer>
+                  <AddToCalendarButton
+                    name={`${element.title}`}
+                    startDate={`${element.year}-${element.month}-${element.day}`}
+                    label="Agendar"
+                    size="0"
+                    startTime={`${element.startTime}`}
+                    endTime={`${element.endTime}`}
+                    timeZone="America/Los_Angeles"
+                    location={`${element.location}`}
+                    description={`${element.description}`}
+                    options="'Apple','Google','iCal','Outlook.com','Yahoo'"
+                    lightMode="bodyScheme"
+                  ></AddToCalendarButton>
+                  <Styled.LinkToEventButton>
+                    <Link href={`${element.link}`}>Visitar &rarr;</Link>
+                  </Styled.LinkToEventButton>
+                </Styled.ButtonContainer>
+              </Styled.Content>
+            </Styled.Card>
+          ))
+        )}
       </Styled.CardContainer>
     </>
   );

@@ -14,6 +14,11 @@ export const Styled = {
     bottom-0
     w-full
     z-50
+    bg-darkblue
+    border-[#229473]
+    border-solid
+    border-t-4
+
   `,
   Copyright: tw.div`
   text-white

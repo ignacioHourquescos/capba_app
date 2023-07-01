@@ -26,6 +26,8 @@ module.exports = {
       colors: {
         blue: '#161545',
         lightblue: '#25608C',
+        green: '#229473',
+        darkblue: '#1A1A38',
       },
       spacing: {
         128: '32rem',

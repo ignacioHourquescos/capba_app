@@ -8,8 +8,8 @@ export const Styled = {
   bg-white
   flex
   flex-row
-  m-4
-  rounded-md
+  my-4
+  rounded-lg
   `,
   Content: tw.div`
   flex-1
@@ -24,6 +24,7 @@ bg-lightblue
 text-white
 align-middle
 font-semibold
+rounded-l-lg
   `,
   Header: tw.div`
  flex
@@ -43,7 +44,7 @@ font-semibold
   w-100
   text-sm
   px-2
-  
+  mb-2
 
   `,
   LocationTime: tw.div`
@@ -82,5 +83,11 @@ text-xs
   `,
   HiddenBlock: tw.div`
   min-h-[40vh]
+  `,
+  NoEvents: tw.div`
+  text-slate-400
+  text-sm
+  mx-auto
+  text-center
   `,
 };
